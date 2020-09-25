@@ -1,0 +1,5 @@
+aiofiles==0.5.0
+aiohttp==3.6.2
+aiomisc==10.2.0
+ConfigArgParse==1.2.3
+setproctitle==1.1.10
