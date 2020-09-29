@@ -4,7 +4,7 @@ from importlib.machinery import SourceFileLoader
 from pkg_resources import parse_requirements
 from setuptools import find_packages, setup
 
-module_name = 'fileloader'
+module_name = 'file_loader'
 
 module = SourceFileLoader(
     module_name, os.path.join(module_name, '__init__.py')
@@ -47,7 +47,7 @@ setup(
     extras_require={'dev': load_requirements('requirements.dev.txt')},
     entry_points={
         'console_scripts': [
-            '{0}-api = {0}.api.__main__:main'.format(module_name),
+            '{0} = {0}.__main__:main'.format(module_name),
         ]
     },
     include_package_data=True

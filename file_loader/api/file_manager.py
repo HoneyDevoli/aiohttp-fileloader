@@ -29,7 +29,7 @@ class FileManager:
         self.chunk_size = chunk_size
 
     async def save_file(self,
-                        file_stream: Union[BodyPartReader, MultipartReader])\
+                        file_stream: Union[BodyPartReader, MultipartReader]) \
             -> str:
         """Saves the file coming in reader
            :param file_stream: the request stream
@@ -52,17 +52,17 @@ class FileManager:
                 file_hash.update(chunk)
 
         if file_size == 0:
-            await aiofiles.os.remove(self.path_store / file_tmp_name)
+            os.remove(self.path_store / file_tmp_name)
             raise EmptyFileError
 
         new_dir_path = self.path_store / file_hash.hexdigest()[:2]
         if not os.path.isdir(new_dir_path):
-            await aiofiles.os.mkdir(new_dir_path)
+            os.mkdir(new_dir_path)
 
         # on Unix system silently replace existing file
         try:
-            await aiofiles.os.rename(self.path_store / file_tmp_name,
-                                     new_dir_path / file_hash.hexdigest())
+            os.rename(self.path_store / file_tmp_name,
+                      new_dir_path / file_hash.hexdigest())
         except FileExistsError:
             logger.info("File with hash %s has already existed",
                         file_hash.hexdigest())
@@ -105,5 +105,5 @@ class FileManager:
             logger.warning('File with hash %s not found', file_hash)
             raise FileNotFoundError
 
-        await aiofiles.os.remove(file_path)
+        os.remove(file_path)
         logger.info('Delete file with path %s', file_path)

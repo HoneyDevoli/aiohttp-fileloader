@@ -31,7 +31,7 @@ class FilesView(View):
 
         file_manager = self._create_file_manager()
         try:
-            file_reader = await file_manager.get_file_loader(file_hash)
+            file_reader = await file_manager.get_file_reader(file_hash)
 
             response = StreamResponse(
                 status=HTTPStatus.OK,
@@ -39,7 +39,6 @@ class FilesView(View):
                     "Content-disposition": f"attachment; filename={file_hash}"
                 })
             response.enable_chunked_encoding()
-
             await response.prepare(self.request)
             async for chunk in file_reader():
                 await response.write(chunk)
