@@ -12,7 +12,12 @@ logger = logging.getLogger(__name__)
 
 
 class FilesView(View):
-    URL_PATH = r'/files/{file_hash:(\w*\d*)+}'
+    """Handler for working with files
+
+    :attribute URL_PATH: handler URL, verifies that the argument is
+    a hexadecimal hash code or empty
+    """
+    URL_PATH = r'/files/{file_hash:[A-Fa-f0-9]*}'
 
     async def get(self) -> StreamResponse:
         """Get file by hash of file from storage
@@ -27,7 +32,7 @@ class FilesView(View):
         """
         file_hash = self.request.match_info['file_hash'].lower()
         if not file_hash:
-            raise ValidationError
+            raise ValidationError(message='file_hash is empty')
 
         file_manager = self._create_file_manager()
         try:
@@ -36,7 +41,7 @@ class FilesView(View):
             response = StreamResponse(
                 status=HTTPStatus.OK,
                 headers={
-                    "Content-disposition": f"attachment; filename={file_hash}"
+                    'Content-disposition': f'attachment; filename={file_hash}'
                 })
             response.enable_chunked_encoding()
             await response.prepare(self.request)
@@ -98,7 +103,7 @@ class FilesView(View):
         """
         file_hash = self.request.match_info['file_hash']
         if not file_hash:
-            raise ValidationError
+            raise ValidationError(message='file_hash is empty')
 
         file_manager = self._create_file_manager()
         try:

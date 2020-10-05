@@ -30,7 +30,7 @@ setup(
     license=module.__license__,
     description=module.__doc__,
     url='https://github.com/HoneyDevoli/aiohttp-fileloader',
-    platforms='all',
+    platforms='posix',
     long_description=open('README.md').read(),
     classifiers=[
         'Intended Audience :: Developers',
